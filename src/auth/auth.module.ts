@@ -15,6 +15,7 @@ import { LocalStrategy } from './strategies/local.strategy';
   imports: [
     UserModule,
     HashModule,
+    ConfigModule,
     JwtModule.registerAsync({
       imports: [ConfigModule.forRoot()],
       inject: [ConfigService],
