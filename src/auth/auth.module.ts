@@ -14,7 +14,7 @@ import { LocalStrategy } from './strategies/local.strategy';
     UserModule,
     JwtModule.register({
       secret: 's3cr3t4jwt',
-      signOptions: { expiresIn: '10s' },
+      signOptions: { expiresIn: '5m' },
     }),
   ],
   providers: [
