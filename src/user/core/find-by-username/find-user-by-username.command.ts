@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/user/entities/user.entity';
-import { GetAllUsers } from '../get-all-users/get-all-users.command';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class FindUserByUsername {
-  constructor(private readonly getAllUsers: GetAllUsers) {}
+  constructor(
+    @InjectRepository(User) private readonly usersRepository: Repository<User>,
+  ) {}
   async activate(username: string): Promise<User> {
-    return (await this.getAllUsers.activate()).find(
-      x => x.username === username,
-    );
+    const [user] = await this.usersRepository.findByIds([username]);
+    return user;
   }
 }

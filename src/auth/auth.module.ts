@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { HashModule } from 'src/hash/hash.module';
 import { UserModule } from 'src/user/user.module';
 import { GenerateAccessToken } from './core/generate-access-token/generate-access-token.command';
 import { VerifyUser } from './core/verify-user/verify-user.command';
@@ -13,6 +14,7 @@ import { LocalStrategy } from './strategies/local.strategy';
 @Module({
   imports: [
     UserModule,
+    HashModule,
     JwtModule.registerAsync({
       imports: [ConfigModule.forRoot()],
       inject: [ConfigService],
