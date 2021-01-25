@@ -1,21 +1,25 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import {
+  ConfigModule,
+  ConfigService
+} from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { HashModule } from 'src/hash/hash.module';
-import { UserModule } from 'src/user/user.module';
-import { GenerateAccessToken } from './core/generate-access-token/generate-access-token.command';
-import { VerifyUser } from './core/verify-user/verify-user.command';
-import { GetAccessTokenRoute } from './routes/get-access-token/get-access-token.route';
-import { VerifyAccessTokenRoute } from './routes/verify-access-token/verify-access-token.route';
-import { BasicStrategy } from './strategies/basic.strategy';
-import { JwtStrategy } from './strategies/jwt.strategy';
-import { LocalStrategy } from './strategies/local.strategy';
+import { HashingModule } from '../hashing';
+import { UserModule } from '../user';
+import {
+  BasicStrategy,
+  GenerateAccessToken,
+  GetAccessTokenRoute,
+  JwtStrategy,
+  LocalStrategy,
+  VerifyAccessTokenRoute,
+  VerifyUser
+} from './v1';
 
 @Module({
   imports: [
     UserModule,
-    HashModule,
-    ConfigModule,
+    ConfigModule.forRoot(),
     JwtModule.registerAsync({
       imports: [ConfigModule.forRoot()],
       inject: [ConfigService],
@@ -26,14 +30,18 @@ import { LocalStrategy } from './strategies/local.strategy';
         },
       }),
     }),
+    HashingModule,
   ],
   providers: [
     VerifyUser,
     GenerateAccessToken,
     BasicStrategy,
     JwtStrategy,
-    LocalStrategy,
+    // LocalStrategy,
   ],
-  controllers: [GetAccessTokenRoute, VerifyAccessTokenRoute],
+  controllers: [
+    GetAccessTokenRoute,
+    VerifyAccessTokenRoute
+  ],
 })
-export class AuthModule {}
+export class AuthModule { }
