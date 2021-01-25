@@ -20,12 +20,9 @@ import {
   imports: [
     UserModule,
     ConfigModule.forRoot(),
-    JwtModule.registerAsync({
-      imports: [ConfigModule.forRoot()],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => new JwtConfig(config)
-        .createJwtOptions(),
-    }),
+    JwtModule.registerAsync(
+      new JwtConfig(),
+    ),
     HashingModule,
   ],
   providers: [

@@ -1,16 +1,23 @@
-import { ConfigService } from "@nestjs/config";
-import { JwtModuleOptions, JwtOptionsFactory } from "@nestjs/jwt";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { JwtModuleOptions, JwtModuleAsyncOptions } from "@nestjs/jwt";
+export class JwtConfig implements JwtModuleAsyncOptions {
+  imports: Array<any>;
+  inject: Array<any>;
+  useFactory: (...args: any[]) => JwtModuleOptions | Promise<JwtModuleOptions>;
 
-export class JwtConfig implements JwtOptionsFactory {
-  constructor(private readonly config: ConfigService) { }
-  createJwtOptions(): JwtModuleOptions | Promise<JwtModuleOptions> {
-    console.log(this.config)
-    return {
-      secret: this.config.get('JWT_SECRET') || 's3cr3t4jwt',
+  constructor() {
+    this.imports = [
+      ConfigModule.forRoot(),
+    ];
+    this.inject = [
+      ConfigService,
+    ];
+
+    this.useFactory = (config: ConfigService) => ({
+      secret: config.get('JWT_SECRET') || 's3cr3t4jwt',
       signOptions: {
-        expiresIn: this.config.get('JWT_EXPIRATION'),
+        expiresIn: config.get('JWT_EXPIRATION'),
       },
-    }
+    });
   }
-
 }
