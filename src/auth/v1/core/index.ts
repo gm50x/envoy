@@ -1,2 +1,2 @@
-export * from './generate-access-token/generate-access-token.core';
+export * from './get-access-token/get-access-token.core';
 export * from './verify-user/verify-user.core';

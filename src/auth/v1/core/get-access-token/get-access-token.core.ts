@@ -4,10 +4,10 @@ import { Token } from '../../domain';
 import { User } from '../../../../user/v1';
 
 @Injectable()
-export class GenerateAccessToken {
+export class GetAccessToken {
   constructor(private jwtService: JwtService) { }
   async activate(user: User): Promise<Token> {
-    const payload = { sub: user.username };
+    const payload = { sub: user.username, email: user.email };
     return { accessToken: this.jwtService.sign(payload) };
   }
 }
