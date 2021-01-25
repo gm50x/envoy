@@ -19,7 +19,6 @@ export class GetAccessTokenRoute {
   @ApiResponse({ status: 401, type: Response })
   @ApiResponse({ status: 500, type: Response })
   async activate(@AuthUser() user: User) {
-    console.log(user);
     return this.generateAccessToken.activate(user);
   }
 }
