@@ -5,11 +5,12 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "main": "dist/main",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
+    "start": "node .",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -18,7 +19,11 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migrations:create": "node --require ts-node/register ./node_modules/typeorm/cli.js migration:create -d migrations -n",
+    "migrations:generate": "node --require ts-node/register ./node_modules/typeorm/cli.js migration:generate -d migrations -n",
+    "migrations:up": "node --require ts-node/register ./node_modules/typeorm/cli.js migration:run",
+    "migrations:down": "node --require ts-node/register ./node_modules/typeorm/cli.js migration:revert"
   },
   "dependencies": {
     "@nestjs/common": "^7.0.0",
