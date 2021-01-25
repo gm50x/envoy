@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
-import { HashModule } from './hash/hash.module';
-import { APP_FILTER } from '@nestjs/core';
-import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { AuthModule } from './auth';
+import { UserModule } from './user';
+import { HashingModule } from './hashing';
+import { CrossModule } from './cross/cross.module';
 
 @Module({
   imports: [
@@ -20,9 +19,8 @@ import { HttpExceptionFilter } from './filters/http-exception.filter';
     }),
     AuthModule,
     UserModule,
-    HashModule,
+    HashingModule,
+    CrossModule,
   ],
-  controllers: [],
-  providers: [{ provide: APP_FILTER, useClass: HttpExceptionFilter }],
 })
-export class EnvoyModule {}
+export class EnvoyModule { }

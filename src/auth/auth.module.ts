@@ -1,39 +1,39 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import {
+  ConfigModule,
+  ConfigService
+} from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { HashModule } from 'src/hash/hash.module';
-import { UserModule } from 'src/user/user.module';
-import { GenerateAccessToken } from './core/generate-access-token/generate-access-token.command';
-import { VerifyUser } from './core/verify-user/verify-user.command';
-import { GetAccessTokenRoute } from './routes/get-access-token/get-access-token.route';
-import { VerifyAccessTokenRoute } from './routes/verify-access-token/verify-access-token.route';
-import { BasicStrategy } from './strategies/basic.strategy';
-import { JwtStrategy } from './strategies/jwt.strategy';
-import { LocalStrategy } from './strategies/local.strategy';
+import { HashingModule } from '../hashing';
+import { UserModule } from '../user';
+import {
+  GetAccessToken,
+  GetAccessTokenRoute,
+  VerifyUser,
+  VerifyAccessTokenRoute,
+  BasicStrategy,
+  JwtStrategy,
+  JwtConfig,
+} from './v1';
 
 @Module({
   imports: [
     UserModule,
-    HashModule,
-    ConfigModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule.forRoot()],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        secret: config.get('JWT_SECRET') || 's3cret4jwt',
-        signOptions: {
-          expiresIn: config.get('JWT_EXPIRATION') || '5m',
-        },
-      }),
-    }),
+    ConfigModule.forRoot(),
+    JwtModule.registerAsync(
+      new JwtConfig(),
+    ),
+    HashingModule,
   ],
   providers: [
     VerifyUser,
-    GenerateAccessToken,
+    GetAccessToken,
     BasicStrategy,
     JwtStrategy,
-    LocalStrategy,
   ],
-  controllers: [GetAccessTokenRoute, VerifyAccessTokenRoute],
+  controllers: [
+    GetAccessTokenRoute,
+    VerifyAccessTokenRoute,
+  ],
 })
-export class AuthModule {}
+export class AuthModule { }

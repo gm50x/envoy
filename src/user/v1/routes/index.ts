@@ -1,0 +1,1 @@
+export * from './create-new-user/create-new-user.route';
