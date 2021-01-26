@@ -13,7 +13,7 @@ import { CrossModule } from './cross/cross.module';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         type: 'postgres',
-        url: config.get('MAIN_DB'),
+        url: config.get('DATABASE_URL'),
         autoLoadEntities: true,
       }),
     }),
