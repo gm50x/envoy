@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -8,5 +8,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 @UseGuards(AuthGuard('jwt'))
 export class VerifyAccessTokenRoute {
   @Get()
+  @ApiResponse({ status: 200 })
+  @ApiResponse({ status: 401, type: Response })
   async activate() { }
 }
